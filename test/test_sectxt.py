@@ -7,6 +7,7 @@ from datetime import date, timedelta
 from unittest import TestCase
 from sectxt import Parser, SecurityTXT
 from requests_mock.mocker import Mocker
+from datetime import datetime, timezone
 
 _signed_example = f"""-----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
