@@ -264,6 +264,20 @@ class SecTxtTestCase(TestCase):
         )
 
 
+def test_valid_security_txt(requests_mock: Mocker):
+    with Mocker() as m:
+        expires = f"Expires: {(date.today() + timedelta(days=10)).isoformat()}T18:37:07z\n"
+        byte_content = b'Contact: mailto:me@example.com\n' + bytes(expires, "utf-8")
+        m.get(
+            "https://example.com/.well-known/security.txt",
+            headers={"content-type": "text/plain"},
+            content=byte_content
+        )
+        m.get("https://example.com/security.txt", text=_signed_example)
+        s = SecurityTXT("example.com")
+        assert (s.is_valid())
+
+
 def test_not_correct_path(requests_mock: Mocker):
     with Mocker() as m:
         m.get(
